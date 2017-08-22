@@ -93,8 +93,6 @@
   outputDIR <- args[1]
   customCDF <- args[2]
   celDIR    <- args[3:length(args)]
- 
-  celDIR_files <- list.files(celDIR, recursive = TRUE, full.names = TRUE, include.dirs = FALSE)
   
 
 ## Required packages
@@ -107,6 +105,8 @@
 
 
 ## Define files
+  celDIR_files <- list.files(celDIR, recursive = TRUE, full.names = TRUE, include.dirs = FALSE)
+  
   cel_files <- celDIR_files[ grepl('.CEL', celDIR_files)]
   ann_files <- celDIR_files[!grepl('.CEL', celDIR_files)]
 
