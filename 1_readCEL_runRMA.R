@@ -83,7 +83,7 @@
 
   if(.dev) {
     args <- c('/data/wouter/WGCNA/OUTPUT/IN_VIVO/TG/LIVER/SINGLE/RMA/',
-              'rat2302rnentrezgcdf'
+              'rat2302rnentrezgcdf',
               '/data/wouter/WGCNA/OUTPUT/IN_VIVO/TG/LIVER/SINGLE/')
   } else {
     args <- commandArgs(trailingOnly = TRUE)
