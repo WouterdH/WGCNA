@@ -4,7 +4,7 @@
 ### Wouter den Hollander 15 Aug 2017
 
 ### How to use
-##  Rscript 1_readCEL_runRMA.R outputDIR celDIR_1 celDIR_2 ... celDIR_n
+##  Rscript 1_readCEL_runRMA.R outputDIR customCDF celDIR_1 celDIR_2 ... celDIR_n
 ##  Where
 ##    outputDIR must be an existing directory to which the normalized expression data is saved.
 ##    celDIR_n    must be a directory that contains subdirectories with .CEL files and annotation (DM)	  
@@ -29,6 +29,8 @@
   }
 
   readAnnotation <- function(ann_file) {
+    ## Function is tailored towards IN_VIVO rat data from TG & DM.
+
     if(.debug) {
       ann_file <- '/data/wouter/WGCNA/OUTPUT/IN_VIVO/TG/LIVER/SINGLE//indomethacin.Rat.in_vivo.Kidney.Single/Attribute.tsv' # TG
       ann_file <- '/data/wouter/WGCNA/OUTPUT/IN_VIVO/DM/KIDNEY/Affymetrix_KIDNEY_A/ATORVASTATIN/ATORVASTATIN'               # DM
@@ -80,15 +82,17 @@
 
   if(.dev) {
     args <- c('/data/wouter/WGCNA/OUTPUT/IN_VIVO/TG/LIVER/SINGLE/RMA/',
+              'rat2302rnentrezgcdf'
               '/data/wouter/WGCNA/OUTPUT/IN_VIVO/TG/LIVER/SINGLE/')
   } else {
     args <- commandArgs(trailingOnly = TRUE)
   }
  
-  if(length(args) < 2) stop('Need outputdir and at least one celDIR.\n')
+  if(length(args) < 3) stop('Need outputdir, customCDF and at least one celDIR.\n')
 
   outputDIR <- args[1]
-  celDIR    <- args[2:length(args)]
+  customCDF <- args[2]
+  celDIR    <- args[3:length(args)]
  
   celDIR_files <- list.files(celDIR, recursive = TRUE, full.names = TRUE, include.dirs = FALSE)
   
@@ -108,7 +112,7 @@
 
 
 ## RMA
-  rmaData  <- justRMA(filenames = cel_files, celfile.path = '', cdfname = 'rat2302rnentrezgcdf')
+  rmaData  <- justRMA(filenames = cel_files, celfile.path = '', cdfname = customCDF)
     pData(rmaData) <- do.call(rbind.fill, lapply(ann_files, readAnnotation))
     exprs(rmaData) <- exprs(rmaData)[, rownames(pData(rmaData))]
 
