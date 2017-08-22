@@ -6,7 +6,8 @@
 ### How to use
 ##  Rscript 1_readCEL_runRMA.R outputDIR customCDF celDIR_1 celDIR_2 ... celDIR_n
 ##  Where
-##    outputDIR must be an existing directory to which the normalized expression data is saved.
+##    outputDIR   must be a directory to which the normalized expression data is saved.
+##    customCDF   must be an R PACKAGE INSTALLED customCDF file
 ##    celDIR_n    must be a directory that contains subdirectories with .CEL files and annotation (DM)	  
 ##  Arguments must be in this order. 
 
