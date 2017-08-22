@@ -98,6 +98,7 @@
 
 ## Required packages
   library(affy)
+  library(rat2302rnentrezgcdf)
   library(plyr)
 
 
