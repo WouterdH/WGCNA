@@ -101,12 +101,9 @@
   library(plyr)
 
 
-## Pre-run checks
-  if(any(grepl('.CEL', celDIR_files))) stop('Could not find .CEL files.\n')
-
-
 ## Define files
   celDIR_files <- list.files(celDIR, recursive = TRUE, full.names = TRUE, include.dirs = FALSE)
+    if(any(grepl('.CEL', celDIR_files))) stop('Could not find .CEL files.\n')
   
   cel_files <- celDIR_files[ grepl('.CEL', celDIR_files)]
   ann_files <- celDIR_files[!grepl('.CEL', celDIR_files)]
