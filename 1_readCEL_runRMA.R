@@ -37,6 +37,8 @@
       ann_file <- '/data/wouter/WGCNA/OUTPUT/IN_VIVO/DM/KIDNEY/Affymetrix_KIDNEY_A/ATORVASTATIN/ATORVASTATIN'               # DM
     }
 
+    cat(ann_file, '\n')
+
     ann_data <- data.frame(do.call(rbind, lapply(readLines(ann_file), function(line) unlist(strsplit(gsub('\t', '___', line), '___') )))) 
     ann_data <- ann_data[ann_data[,2] != 'NA', ]
       colnames(ann_data) <- toupper(ann_data[1, ])
@@ -108,6 +110,9 @@
   
   cel_files <- celDIR_files[ grepl('.CEL', celDIR_files)]
   ann_files <- celDIR_files[!grepl('.CEL', celDIR_files)]
+
+  cat(paste0('Found ', length(cel_files), ' CEL files to RMA.\n'))
+  cat(paste0('Found ', length(ann_files), ' annotation files along with them.\n'))
 
 
 ## RMA
