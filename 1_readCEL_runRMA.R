@@ -73,7 +73,7 @@
     } else {  # Apparently a TG annotation file
       ann_data$DOSE_FACTOR <- .mgsub(c('CONTROL', 'LOW', 'MIDDLE', 'HIGH'), c('CTRL', 'LOW', 'MED', 'HI'), toupper(ann_data$DOSE_LEVEL))
       ann_data$DATA_SOURCE <- 'TG'
-      ann_DATA$TIME <- factor(as.numeric(gsub(' hr', '', ann_data$SACRI_PERIOD)), ordered = TRUE)
+      ann_data$TIME <- factor(as.numeric(gsub(' hr', '', ann_data$SACRI_PERIOD)), ordered = TRUE)
     }
 
     return(ann_data)
