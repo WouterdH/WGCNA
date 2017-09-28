@@ -73,7 +73,7 @@
     } else {  # Apparently a TG annotation file
       ann_data$DOSE_FACTOR <- .mgsub(c('CONTROL', 'LOW', 'MIDDLE', 'HIGH'), c('CTRL', 'LOW', 'MED', 'HI'), toupper(ann_data$DOSE_LEVEL))
       ann_data$DATA_SOURCE <- 'TG'
-      ann_data$TIME <- factor(as.numeric(gsub(' hr', '', ann_data$SACRI_PERIOD)), ordered = TRUE)
+      ann_data$TIME <- factor(as.numeric(gsub(' day', '', gsub(' hr', '', ann_data$SACRI_PERIOD)), ordered = TRUE))
     }
 
     return(ann_data)
@@ -84,9 +84,13 @@
   options(stringsAsFactors = FALSE, verbose = TRUE)
 
   if(.dev) {
-    args <- c('/data/wouter/WGCNA/OUTPUT/IN_VIVO/TG/LIVER/SINGLE/RMA/',
+    args <- c('/data/wouter/WGCNA/OUTPUT/IN_VIVO/TG/KIDNEY/RMA/',
               'rat2302rnentrezgcdf',
-              '/data/wouter/WGCNA/OUTPUT/IN_VIVO/TG/LIVER/SINGLE/')
+              '/data/wouter/WGCNA/OUTPUT/IN_VIVO/TG/KIDNEY/')
+
+    args <- c('/data/wouter/WGCNA/OUTPUT/IN_VIVO/DM/KIDNEY/RMA/',
+              'rat2302rnentrezgcdf',
+              '/data/wouter/WGCNA/OUTPUT/IN_VIVO/DM/KIDNEY/')
   } else {
     args <- commandArgs(trailingOnly = TRUE)
   }
@@ -114,10 +118,19 @@
   cat(paste0('Found ', length(cel_files), ' CEL files to RMA.\n'))
   cat(paste0('Found ', length(ann_files), ' annotation files along with them.\n'))
 
+  cel_files_unique <- unique(sapply(cel_files, function(x) grep('CEL', unlist(strsplit(x, '/')), value = T )))
+  if(length(cel_files) != length(cel_files_unique)) { # This might fuck-up TG data; not tested.
+    cat('Non-unique .CEL files found. Dropping duplicates.\n')
+
+    cel_files <- cel_files[which(!duplicated(sapply(cel_files, function(x) grep('CEL', unlist(strsplit(x, '/')), value = T ))))]
+  }
 
 ## RMA
   rmaData  <- justRMA(filenames = cel_files, celfile.path = '', cdfname = customCDF)
-    pData(rmaData) <- do.call(rbind.fill, lapply(ann_files, readAnnotation))
+    sampleData <- do.call(rbind.fill, lapply(ann_files, readAnnotation))
+    sampleData <- sampleData[which(!duplicated(sampleData$BARCODE)), ]
+      rownames(sampleData) <- paste0(sampleData$BARCODE, '.CEL')
+    pData(rmaData) <- sampleData
     exprs(rmaData) <- exprs(rmaData)[, rownames(pData(rmaData))]
 
 
