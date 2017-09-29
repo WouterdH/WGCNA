@@ -1,6 +1,8 @@
 #!/usr/bin/env Rscript
 
-### Script that reads .CEL files and generates 
+### Script that reads .CEL files and generates an RMA normalized .RData file in the 
+### defined outputDIR
+
 ### Wouter den Hollander 15 Aug 2017
 
 ### How to use
